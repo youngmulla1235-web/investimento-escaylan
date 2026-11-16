@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INVESTIMENTO ESCAYLAN</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#071426;
+ color:white;
+}
+header{
+ background:#0d2b50;
+ padding:25px 15px;
+ text-align:center;
+ border-bottom:2px solid #168cff;
+}
+header h1{color:#38a4ff;margin:0}
+header p{color:#c7d9ee}
+main{padding:20px;max-width:650px;margin:auto}
+.card{
+ background:#102b49;
+ padding:20px;
+ margin:15px 0;
+ border-radius:14px;
+ border:1px solid #24517c;
+}
+.balance{font-size:30px;color:#38a4ff;font-weight:bold}
+button{
+ background:#0879dc;
+ color:white;
+ border:0;
+ padding:14px;
+ width:100%;
+ border-radius:9px;
+ font-size:16px;
+ margin-top:12px;
+ cursor:pointer;
+}
+input{
+ width:100%;
+ padding:14px;
+ margin-top:10px;
+ border-radius:8px;
+ border:0;
+ font-size:16px;
+}
+small{color:#b9cce0}
+footer{text-align:center;padding:25px;color:#a8bfd8}
+</style>
+</head>
+<body>
+
+<header>
+<h1>INVESTIMENTO ESCAYLAN</h1>
+<p>O teu futuro começa com planeamento</p>
+</header>
+
+<main>
+<div class="card">
+<h2>Painel do administrador</h2>
+<p>Bem-vindo ao sistema demonstrativo.</p>
+<small>Modo de teste — sem dinheiro real</small>
+</div>
+
+<div class="card">
+<h3>Saldo demonstrativo</h3>
+<div class="balance" id="saldo">0,00 MT</div>
+</div>
+
+<div class="card">
+<h3>Adicionar investimento de teste</h3>
+<input type="number" id="valor" placeholder="Valor em MT" min="1">
+<button onclick="adicionar()">Adicionar valor fictício</button>
+<p id="mensagem"></p>
+</div>
+
+<div class="card">
+<h3>Histórico de operações</h3>
+<div id="historico">Nenhuma operação realizada.</div>
+</div>
+</main>
+
+<footer>
+INVESTIMENTO ESCAYLAN © 2026
+<br><small>Plataforma demonstrativa. Não recebe depósitos reais.</small>
+</footer>
+
+<script>
+let saldo = 0;
+
+function adicionar(){
+ let campo = document.getElementById("valor");
+ let valor = Number(campo.value);
+
+ if(!Number.isFinite(valor) || valor <= 0){
+  document.getElementById("mensagem").innerText =
+  "Introduza um valor válido.";
+  return;
+ }
+
+ saldo += valor;
+
+ document.getElementById("saldo").innerText =
+ saldo.toLocaleString("pt-MZ",{minimumFractionDigits:2})+" MT";
+
+ let historico = document.getElementById("historico");
+ if(historico.innerText === "Nenhuma operação realizada."){
+  historico.innerHTML = "";
+ }
+
+ let item = document.createElement("p");
+ item.textContent = "Teste: +"+valor.toLocaleString("pt-MZ")+" MT";
+ historico.prepend(item);
+
+ document.getElementById("mensagem").innerText =
+ "Operação demonstrativa realizada!";
+ campo.value = "";
+}
+</script>
+
+</body>
+</html>
