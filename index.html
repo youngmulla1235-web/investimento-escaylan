@@ -73,6 +73,69 @@ document.getElementById('painel').classList.add('hidden');
 document.getElementById('login').classList.remove('hidden');
 document.getElementById('password').value='';
 }
+function mostrarUtilizadores(){
+  let area=document.getElementById('gestao-utilizadores');
+
+  if(!area){
+    area=document.createElement('div');
+    area.id='gestao-utilizadores';
+    area.className='card';
+    document.getElementById('painel').appendChild(area);
+  }
+
+  area.innerHTML=`
+    <h2>Gestão de Utilizadores</h2>
+    <input id="nomeUser" placeholder="Nome completo">
+    <input id="telefoneUser" placeholder="Número de telefone">
+    <button onclick="adicionarUtilizador()">Cadastrar utilizador</button>
+    <h3>Utilizadores registados</h3>
+    <div id="listaUsers"></div>
+  `;
+  listarUtilizadores();
+}
+
+function adicionarUtilizador(){
+  let nome=document.getElementById('nomeUser').value.trim();
+  let telefone=document.getElementById('telefoneUser').value.trim();
+
+  if(!nome || !telefone){
+    alert('Preenche todos os campos!');
+    return;
+  }
+
+  let users=JSON.parse(localStorage.getItem('escaylanUsers')||'[]');
+  users.push({nome,telefone,bloqueado:false});
+  localStorage.setItem('escaylanUsers',JSON.stringify(users));
+
+  document.getElementById('nomeUser').value='';
+  document.getElementById('telefoneUser').value='';
+  listarUtilizadores();
+}
+
+function listarUtilizadores(){
+  let users=JSON.parse(localStorage.getItem('escaylanUsers')||'[]');
+  let lista=document.getElementById('listaUsers');
+  if(!lista)return;
+
+  lista.innerHTML='';
+  users.forEach((u,i)=>{
+    let item=document.createElement('p');
+    item.textContent=u.nome+' - '+u.telefone+
+      (u.bloqueado?' (Bloqueado)':' (Ativo)');
+
+    let btn=document.createElement('button');
+    btn.textContent=u.bloqueado?'Desbloquear':'Bloquear';
+    btn.onclick=()=>{
+      users[i].bloqueado=!users[i].bloqueado;
+      localStorage.setItem('escaylanUsers',JSON.stringify(users));
+      listarUtilizadores();
+    };
+
+    lista.appendChild(item);
+    lista.appendChild(btn);
+  });
+}
+
 </script>
 </body>
 </html>
