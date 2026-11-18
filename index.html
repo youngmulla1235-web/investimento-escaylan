@@ -133,7 +133,11 @@ function listarUtilizadores(){
 
     lista.appendChild(item);
     lista.appendChild(btn);
-  });
+ });let apagar=document.createElement('button');
+apagar.textContent='Eliminar utilizador';
+apagar.onclick=()=>eliminarUtilizador(i);
+lista.appendChild(apagar);
+
 }
 
 </script>
