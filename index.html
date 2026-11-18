@@ -131,15 +131,34 @@ function listarUtilizadores(){
       listarUtilizadores();
     };
 
-    lista.appendChild(item);
-    lista.appendChild(btn);
- });let apagar=document.createElement('button');
+   lista.appendChild(item);
+   lista.appendChild(btn);
+
+let apagar=document.createElement('button');
 apagar.textContent='Eliminar utilizador';
 apagar.onclick=()=>eliminarUtilizador(i);
 lista.appendChild(apagar);
+});
 
 }
+function eliminarUtilizador(i){
+  if(!confirm('Queres eliminar este utilizador?')){
+    return;
+  }
 
+  let users=JSON.parse(
+    localStorage.getItem('escaylanUsers')||'[]'
+  );
+
+  users.splice(i,1);
+
+  localStorage.setItem(
+    'escaylanUsers',
+    JSON.stringify(users)
+  );
+
+  listarUtilizadores();
+}
 </script>
 </body>
 </html>
