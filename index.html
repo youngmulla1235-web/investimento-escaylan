@@ -201,6 +201,93 @@ function eliminarUtilizador(i){
 
   listarUtilizadores();
 }
+function depositarMT(){
+ let telefone=document.getElementById('telefoneOperacao').value.trim();
+ let valor=Number(document.getElementById('valorOperacao').value);
+
+ let users=JSON.parse(localStorage.getItem('escaylanUsers')||'[]');
+ let user=users.find(u=>u.telefone===telefone);
+
+ if(!user){
+  alert('Utilizador não encontrado!');
+  return;
+ }
+
+ if(!Number.isFinite(valor)||valor<=0){
+  alert('Valor inválido!');
+  return;
+ }
+
+ user.saldo=(Number(user.saldo)||0)+valor;
+
+ localStorage.setItem('escaylanUsers',JSON.stringify(users));
+
+ guardarOperacao('Depósito',telefone,valor);
+ alert('Depósito de demonstração realizado!');
+}
+
+function levantarMT(){
+ let telefone=document.getElementById('telefoneOperacao').value.trim();
+ let valor=Number(document.getElementById('valorOperacao').value);
+
+ let users=JSON.parse(localStorage.getItem('escaylanUsers')||'[]');
+ let user=users.find(u=>u.telefone===telefone);
+
+ if(!user){
+  alert('Utilizador não encontrado!');
+  return;
+ }
+
+ if(!Number.isFinite(valor)||valor<=0){
+  alert('Valor inválido!');
+  return;
+ }
+
+ user.saldo=Number(user.saldo)||0;
+
+ if(user.saldo<valor){
+  alert('Saldo insuficiente!');
+  return;
+ }
+
+ user.saldo-=valor;
+
+ localStorage.setItem('escaylanUsers',JSON.stringify(users));
+
+ guardarOperacao('Levantamento',telefone,valor);
+ alert('Levantamento de demonstração realizado!');
+}
+
+function guardarOperacao(tipo,telefone,valor){
+ let historico=JSON.parse(localStorage.getItem('escaylanHistorico')||'[]');
+
+ historico.push({
+  tipo:tipo,
+  telefone:telefone,
+  valor:valor,
+  data:new Date().toLocaleString()
+ });
+
+ localStorage.setItem('escaylanHistorico',JSON.stringify(historico));
+
+ mostrarHistorico();
+}
+
+function mostrarHistorico(){
+ let historico=JSON.parse(localStorage.getItem('escaylanHistorico')||'[]');
+ let area=document.getElementById('historicoOperacoes');
+
+ if(!area)return;
+
+ area.innerHTML='';
+
+ historico.slice().reverse().forEach(op=>{
+  let item=document.createElement('p');
+  item.textContent=op.tipo+' - '+op.telefone+' - '+op.valor+' MT - '+op.data;
+  area.appendChild(item);
+ });
+}
+
 </script>
 </body>
 </html>
