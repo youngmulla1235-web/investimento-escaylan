@@ -138,6 +138,34 @@ let apagar=document.createElement('button');
 apagar.textContent='Eliminar utilizador';
 apagar.onclick=()=>eliminarUtilizador(i);
 lista.appendChild(apagar);
+
+let editar=document.createElement('button');
+editar.textContent='Editar utilizador';
+
+editar.onclick=()=>{
+ let novoNome=prompt('Novo nome:',users[i].nome);
+ if(novoNome===null)return;
+
+ let novoTelefone=prompt('Novo telefone:',users[i].telefone);
+ if(novoTelefone===null)return;
+
+ if(!novoNome.trim() || !novoTelefone.trim()){
+  alert('Preenche todos os campos!');
+  return;
+ }
+
+ users[i].nome=novoNome.trim();
+ users[i].telefone=novoTelefone.trim();
+
+ localStorage.setItem(
+  'escaylanUsers',
+  JSON.stringify(users)
+ );
+
+ listarUtilizadores();
+};
+
+lista.appendChild(editar);
 });
 
 }
